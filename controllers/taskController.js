@@ -1,5 +1,5 @@
 const Task = require('../models/Task');
-require('./models/associations');
+require('../models/associations');
 
 exports.getAllTasks = async (req, res) => {
   try {
@@ -29,7 +29,12 @@ exports.createTask = async (req, res) => {
 exports.updateTask = async (req, res) => {
   try {
     const { id } = req.params;
-    const task = await Task.findByPk(id);
+    const task = await Task.findOne({
+      where: { 
+        id,
+        userId: req.user.id 
+      }
+    });
     
     if (!task) {
       return res.status(404).json({ message: 'Task not found' });
@@ -45,7 +50,12 @@ exports.updateTask = async (req, res) => {
 exports.deleteTask = async (req, res) => {
   try {
     const { id } = req.params;
-    const task = await Task.findByPk(id);
+    const task = await Task.findOne({
+      where: { 
+        id,
+        userId: req.user.id 
+      }
+    });
     
     if (!task) {
       return res.status(404).json({ message: 'Task not found' });
