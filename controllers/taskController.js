@@ -1,9 +1,11 @@
 const Task = require('../models/Task');
+require('./models/associations');
 
 exports.getAllTasks = async (req, res) => {
   try {
     const tasks = await Task.findAll({
-      order: [['id', 'DESC']] 
+      where: { userId: req.user.id },
+      order: [['id', 'DESC']]
     });
     res.json(tasks);
   } catch (error) {
@@ -14,7 +16,10 @@ exports.getAllTasks = async (req, res) => {
 exports.createTask = async (req, res) => {
   try {
     const { title } = req.body;
-    const task = await Task.create({ title });
+    const task = await Task.create({ 
+      title,
+      userId: req.user.id
+    });
     res.status(201).json(task);
   } catch (error) {
     res.status(400).json({ message: error.message });

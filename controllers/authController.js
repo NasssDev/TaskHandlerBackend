@@ -14,10 +14,14 @@ exports.signup = async (req, res) => {
     }
 
     const user = await User.create({ email, password });
-
     const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '24h' });
 
-    res.status(201).json({
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'None',
+      maxAge: 24 * 60 * 60 * 1000
+    }).status(201).json({
       message: 'User created successfully',
       token,
       user: {
@@ -46,7 +50,12 @@ exports.login = async (req, res) => {
 
     const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '24h' });
 
-    res.json({
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'None',
+      maxAge: 24 * 60 * 60 * 1000
+    }).json({
       message: 'Logged in successfully',
       token,
       user: {
