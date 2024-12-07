@@ -1,13 +1,40 @@
 const User = require('./User');
-const Task = require('./Task');
+const Donor = require('./Donor');
+const Beneficiary = require('./Beneficiary');
+const DonorBeneficiary = require('./DonorBeneficiary');
+const Donation = require('./Donation');
 
-Task.belongsTo(User, {
-  foreignKey: 'userId',
-  onDelete: 'CASCADE'
+// User can create/manage donors and beneficiaries
+User.hasMany(Donor, {
+  foreignKey: 'createdBy'
+});
+User.hasMany(Beneficiary, {
+  foreignKey: 'createdBy'
 });
 
-User.hasMany(Task, {
-  foreignKey: 'userId'
+// Donor-Beneficiary many-to-many relationship
+Donor.belongsToMany(Beneficiary, {
+  through: DonorBeneficiary,
+  foreignKey: 'donorId'
 });
 
-module.exports = { User, Task }; 
+Beneficiary.belongsToMany(Donor, {
+  through: DonorBeneficiary,
+  foreignKey: 'beneficiaryId'
+});
+
+DonorBeneficiary.hasMany(Donation, {
+  foreignKey: 'donorBeneficiaryId'
+});
+
+Donation.belongsTo(DonorBeneficiary, {
+  foreignKey: 'donorBeneficiaryId'
+});
+
+module.exports = {
+  User,
+  Donor,
+  Beneficiary,
+  DonorBeneficiary,
+  Donation
+}; 
