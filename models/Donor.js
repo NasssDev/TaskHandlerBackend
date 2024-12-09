@@ -15,16 +15,13 @@ const Donor = sequelize.define('Donor', {
     type: DataTypes.STRING
   },
   email: {
-    type: DataTypes.STRING,
-    validate: {
-      isEmail: true
-    }
+    type: DataTypes.STRING
   },
   address: {
     type: DataTypes.TEXT
   },
   donationType: {
-    type: DataTypes.STRING // e.g., 'financial', 'goods', 'services'
+    type: DataTypes.STRING
   },
   status: {
     type: DataTypes.ENUM('active', 'inactive'),

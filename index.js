@@ -4,16 +4,18 @@ const sequelize = require('./config/database');
 require('./models/associations');
 const taskRoutes = require('./routes/taskRoutes');
 const authRoutes = require('./routes/authRoutes');
-const cors = require('cors');
+const donorRoutes = require('./routes/donorRoutes');
+const beneficiaryRoutes = require('./routes/beneficiaryRoutes');
 const donorBeneficiaryRoutes = require('./routes/donorBeneficiaryRoutes');
 const { FRONTEND_URL } = require('./config/constants');
+const cors = require('cors');
 
 
 app.use(express.json());
 
 
 app.use(cors({
-  origin: ['https://freegaza.vercel.app'],
+  origin: FRONTEND_URL,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
@@ -21,7 +23,7 @@ app.use(cors({
 }));
 
 app.options('*', cors({
-  origin: ['https://freegaza.vercel.app'],
+  origin: FRONTEND_URL,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -30,6 +32,8 @@ app.options('*', cors({
 
 app.use('/api/auth', authRoutes);
 app.use('/api/tasks', require('./middleware/auth').protect, taskRoutes);
+app.use('/api/donors', require('./middleware/auth').protect, donorRoutes);
+app.use('/api/beneficiaries', require('./middleware/auth').protect, beneficiaryRoutes);
 app.use('/api/donor-beneficiary', donorBeneficiaryRoutes);
 
 app.use((req, res, next) => {

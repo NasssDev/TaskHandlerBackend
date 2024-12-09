@@ -1,19 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const { protect, authorize } = require('../middleware/auth');
+const donorController = require('../controllers/donorController');
+const { protect } = require('../middleware/auth');
 
 router.use(protect);
 
 router.route('/')
-  .get(authorize('admin'), async (req, res) => {
-    try {
-      const relationships = await DonorBeneficiary.findAll({
-        include: ['Donor', 'Beneficiary']
-      });
-      res.json(relationships);
-    } catch (error) {
-      res.status(500).json({ message: error.message });
-    }
-  });
+  .get(donorController.getAllDonors)
+  .post(donorController.createDonor);
+
+router.route('/:id')
+  .get(donorController.getDonorById)
+  .put(donorController.updateDonor)
+  .delete(donorController.deleteDonor);
+
+router.post('/:id/link-beneficiary', donorController.linkBeneficiary);
 
 module.exports = router; 

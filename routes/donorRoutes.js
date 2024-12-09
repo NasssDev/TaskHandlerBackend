@@ -1,22 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const donorController = require('../controllers/donorController');
-const { protect, authorize } = require('../middleware/auth');
+const { protect } = require('../middleware/auth');
 
 router.use(protect); // Protect all routes
 
 router.route('/')
   .get(donorController.getAllDonors)
-  .post(authorize('admin'), donorController.createDonor);
+  .post(donorController.createDonor);
 
 router.route('/:id')
   .get(donorController.getDonorById)
-  .put(authorize('admin'), donorController.updateDonor)
-  .delete(authorize('admin'), donorController.deleteDonor);
+  .put(donorController.updateDonor)
+  .delete(donorController.deleteDonor);
 
-router.post('/:id/link-beneficiary', authorize('admin'), donorController.linkBeneficiary);
-
-router.get('/:id/donations', donorController.getDonorDonations);
-router.get('/:id/beneficiaries', donorController.getDonorBeneficiaries);
+router.post('/:id/link-beneficiary', donorController.linkBeneficiary);
 
 module.exports = router; 

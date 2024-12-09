@@ -15,16 +15,13 @@ const Beneficiary = sequelize.define('Beneficiary', {
     type: DataTypes.STRING
   },
   email: {
-    type: DataTypes.STRING,
-    validate: {
-      isEmail: true
-    }
+    type: DataTypes.STRING
   },
   address: {
     type: DataTypes.TEXT
   },
   needType: {
-    type: DataTypes.STRING // e.g., 'financial', 'medical', 'education'
+    type: DataTypes.STRING
   },
   status: {
     type: DataTypes.ENUM('active', 'inactive', 'urgent'),
