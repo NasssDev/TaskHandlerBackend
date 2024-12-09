@@ -16,7 +16,7 @@ app.use(cors({
   origin: ['https://freegaza.vercel.app'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
   optionsSuccessStatus: 200
 }));
 
@@ -37,6 +37,10 @@ app.use((req, res, next) => {
   next();
 });
 
+app.get("/api/health", (req, res) => {
+  res.json({ status: "OK" });
+});
+
 app.use((req, res) => {
   res.status(404).json({ message: 'Route not found' });
 });
@@ -44,10 +48,6 @@ app.use((req, res) => {
 app.use((err, req, res, next) => {
   console.error(err);
   res.status(500).json({ message: 'Internal server error' });
-});
-
-app.get("/api/health", (req, res) => {
-  res.json({ status: "OK" });
 });
 
 const PORT = process.env.PORT || 3000;
