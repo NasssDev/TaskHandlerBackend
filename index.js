@@ -13,7 +13,7 @@ app.use(express.json());
 
 
 app.use(cors({
-  origin: FRONTEND_URL,
+  origin: ['https://freegaza.vercel.app'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
@@ -21,7 +21,7 @@ app.use(cors({
 }));
 
 app.options('*', cors({
-  origin: FRONTEND_URL,
+  origin: ['https://freegaza.vercel.app'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
