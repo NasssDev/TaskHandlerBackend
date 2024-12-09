@@ -16,4 +16,7 @@ router.route('/:id')
 
 router.post('/:id/link-beneficiary', authorize('admin'), donorController.linkBeneficiary);
 
+router.get('/:id/donations', donorController.getDonorDonations);
+router.get('/:id/beneficiaries', donorController.getDonorBeneficiaries);
+
 module.exports = router; 

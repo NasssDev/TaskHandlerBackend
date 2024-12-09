@@ -4,14 +4,16 @@ const sequelize = require('./config/database');
 require('./models/associations');
 const taskRoutes = require('./routes/taskRoutes');
 const authRoutes = require('./routes/authRoutes');
+const { FRONTEND_URL } = require('./config/constants');
 const cors = require('cors');
+const donorBeneficiaryRoutes = require('./routes/donorBeneficiaryRoutes');
 
 
 app.use(express.json());
 
 
 app.use(cors({
-  origin: ['https://task-handler-frontend-seven.vercel.app'],
+  origin: [FRONTEND_URL],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
   credentials: true,
@@ -23,6 +25,7 @@ app.options('*', cors());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/tasks', require('./middleware/auth').protect, taskRoutes);
+app.use('/api/donor-beneficiary', donorBeneficiaryRoutes);
 
 app.get("/api/health", (req, res) => {
   res.json({ status: "OK" });

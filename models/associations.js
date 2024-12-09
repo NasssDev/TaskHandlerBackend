@@ -31,6 +31,24 @@ Donation.belongsTo(DonorBeneficiary, {
   foreignKey: 'donorBeneficiaryId'
 });
 
+DonorBeneficiary.belongsTo(Donor, {
+  foreignKey: 'donorId'
+});
+
+DonorBeneficiary.belongsTo(Beneficiary, {
+  foreignKey: 'beneficiaryId'
+});
+
+Donor.belongsTo(User, {
+  foreignKey: 'createdBy',
+  as: 'creator'
+});
+
+Beneficiary.belongsTo(User, {
+  foreignKey: 'createdBy',
+  as: 'creator'
+});
+
 module.exports = {
   User,
   Donor,
